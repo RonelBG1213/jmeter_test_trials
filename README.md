@@ -9,9 +9,11 @@ Performance and load testing suite for the **Parabank** application using Apache
 ```
 JmeterTest/
 ├── test-plans/          # JMeter test plan files (.jmx)
-│   ├── LoadTest.jmx     # Load test for Parabank homepage (10 threads)
-│   ├── StressTest.jmx   # Stress test configuration (100 threads)
-│   └── StabilityTest.jmx # Stability test (25 threads, long duration)
+│   ├── LoadTest.jmx     # Load test (10 threads, 5 loops)
+│   ├── StressTest.jmx   # Stress test (100 threads, 10 loops)
+│   ├── SpikeTest.jmx    # Spike test (200 threads, rapid ramp-up)
+│   ├── SoakTest.jmx     # Soak test (50 threads, 200 loops)
+│   └── StabilityTest.jmx # Stability test (25 threads, 100 loops)
 ├── results/             # Test execution results (.jtl)
 ├── reports/             # HTML performance test reports
 ├── logs/                # JMeter log files
@@ -341,12 +343,28 @@ Navigate to project root and use the run-test.sh script:
 # Run stress test (100 users, 10 loops)
 ./scripts/run-test.sh stress
 
+# Run spike test (200 users, rapid 10s ramp-up, 3 loops)
+./scripts/run-test.sh spike
+
+# Run soak test (50 users, 200 loops, sustained load)
+./scripts/run-test.sh soak
+
 # Run stability test (25 users, 100 loops)
 ./scripts/run-test.sh stability
 
 # Run all tests
 ./scripts/run-test.sh all
 ```
+
+#### Test Types Explained
+
+| Test Type | Purpose | Configuration | Use Case |
+|-----------|---------|---------------|----------|
+| **Load** | Validate normal load | 10 threads, 5 loops, 10s ramp-up | Regular user traffic simulation |
+| **Stress** | Find system limits | 100 threads, 10 loops, 60s ramp-up | Identify breaking point |
+| **Spike** | Test sudden traffic surge | 200 threads, 3 loops, 10s ramp-up | Simulate flash sales, viral events |
+| **Soak** | Detect memory leaks | 50 threads, 200 loops, 60s ramp-up | Long-duration stability check |
+| **Stability** | Sustained performance | 25 threads, 100 loops, 30s ramp-up | Extended reliability testing |
 
 #### Generate HTML Reports
 
@@ -358,6 +376,12 @@ Add `--report` flag to generate HTML dashboard:
 
 # Run stress test with report
 ./scripts/run-test.sh stress --report
+
+# Run spike test with report
+./scripts/run-test.sh spike --report
+
+# Run soak test with report (long duration)
+./scripts/run-test.sh soak --report
 
 # Run stability test with report
 ./scripts/run-test.sh stability --report
@@ -371,6 +395,81 @@ Add `--report` flag to generate HTML dashboard:
 ```bash
 ./scripts/run-test.sh --help
 ```
+
+---
+
+## Test Scenarios Deep Dive
+
+### Load Test
+**Configuration:** 10 threads, 10s ramp-up, 5 loops  
+**Duration:** ~1 minute  
+**Purpose:** Baseline performance under normal conditions  
+**Validates:**
+- Average response times
+- Basic functionality under light load
+- System health checks
+
+**When to use:** Daily smoke tests, CI/CD integration, baseline metrics
+
+---
+
+### Stress Test
+**Configuration:** 100 threads, 60s ramp-up, 10 loops  
+**Duration:** ~5-10 minutes  
+**Purpose:** Identify system breaking point  
+**Validates:**
+- Maximum capacity
+- Error rates at high load
+- Resource exhaustion points
+- Recovery behavior
+
+**When to use:** Capacity planning, infrastructure sizing, pre-release validation
+
+---
+
+### Spike Test
+**Configuration:** 200 threads, 10s ramp-up, 3 loops  
+**Duration:** ~2 minutes  
+**Purpose:** Sudden traffic surge handling  
+**Validates:**
+- Auto-scaling effectiveness
+- Circuit breaker behavior
+- Rate limiting
+- System recovery from sudden load
+
+**When to use:** Flash sales preparation, product launches, viral event simulation
+
+**Key Point:** Rapid ramp-up simulates real-world traffic spikes
+
+---
+
+### Soak Test
+**Configuration:** 50 threads, 60s ramp-up, 200 loops  
+**Duration:** ~30-60 minutes  
+**Purpose:** Detect memory leaks and degradation  
+**Validates:**
+- Memory consumption over time
+- Connection pool leaks
+- Database connection stability
+- Performance degradation
+
+**When to use:** Production readiness, long-term stability verification, pre-deployment
+
+**Warning:** Long execution time - plan accordingly
+
+---
+
+### Stability Test
+**Configuration:** 25 threads, 30s ramp-up, 100 loops  
+**Duration:** ~15-30 minutes  
+**Purpose:** Extended reliability under moderate load  
+**Validates:**
+- Consistent performance
+- Resource management
+- Error-free execution
+- Think time simulation (2-5s)
+
+**When to use:** Weekly regression tests, continuous performance testing
 
 ---
 

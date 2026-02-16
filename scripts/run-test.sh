@@ -46,6 +46,8 @@ usage() {
     echo "Test Names:"
     echo "  load        Run LoadTest.jmx (10 threads, 5 loops)"
     echo "  stress      Run StressTest.jmx (100 threads, 10 loops)"
+    echo "  spike       Run SpikeTest.jmx (200 threads, rapid ramp-up)"
+    echo "  soak        Run SoakTest.jmx (50 threads, 200 loops - long duration)"
     echo "  stability   Run StabilityTest.jmx (25 threads, 100 loops)"
     echo "  all         Run all test plans"
     echo ""
@@ -55,7 +57,8 @@ usage() {
     echo ""
     echo "Examples:"
     echo "  $0 load                    # Run load test"
-    echo "  $0 stress --report         # Run stress test with report"
+    echo "  $0 spike --report          # Run spike test with report"
+    echo "  $0 soak --report           # Run soak test with report"
     echo "  $0 all --report            # Run all tests with reports"
     echo ""
     echo "Note: Credentials should be in config/credentials/credentials.properties"
@@ -148,6 +151,12 @@ main() {
         stress)
             run_test "$TEST_PLANS_DIR/StressTest.jmx" "stresstest" $GENERATE_REPORT
             ;;
+        spike)
+            run_test "$TEST_PLANS_DIR/SpikeTest.jmx" "spiketest" $GENERATE_REPORT
+            ;;
+        soak)
+            run_test "$TEST_PLANS_DIR/SoakTest.jmx" "soaktest" $GENERATE_REPORT
+            ;;
         stability)
             run_test "$TEST_PLANS_DIR/StabilityTest.jmx" "stabilitytest" $GENERATE_REPORT
             ;;
@@ -156,6 +165,8 @@ main() {
             echo ""
             run_test "$TEST_PLANS_DIR/LoadTest.jmx" "loadtest" $GENERATE_REPORT
             run_test "$TEST_PLANS_DIR/StressTest.jmx" "stresstest" $GENERATE_REPORT
+            run_test "$TEST_PLANS_DIR/SpikeTest.jmx" "spiketest" $GENERATE_REPORT
+            run_test "$TEST_PLANS_DIR/SoakTest.jmx" "soaktest" $GENERATE_REPORT
             run_test "$TEST_PLANS_DIR/StabilityTest.jmx" "stabilitytest" $GENERATE_REPORT
             print_success "All tests completed!"
             ;;
