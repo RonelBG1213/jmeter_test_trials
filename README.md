@@ -33,6 +33,299 @@ JmeterTest/
 
 ---
 
+## Installation Guide
+
+### Prerequisites
+
+- Java 8 or higher (JMeter requires Java)
+- Git (for cloning the repository)
+
+### Step-by-Step Installation
+
+#### macOS
+
+**Using Homebrew (Recommended)**
+
+**1. Install Homebrew** (if not already installed)
+
+Check if Homebrew is installed:
+```bash
+brew --version
+```
+
+If not installed, install Homebrew:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+**2. Update Homebrew**
+```bash
+brew update
+```
+
+**3. Install Java**
+
+Check if Java is installed:
+```bash
+java -version
+```
+
+Install OpenJDK using Homebrew:
+```bash
+brew install openjdk@11
+```
+
+Link Java to system:
+```bash
+sudo ln -sfn /opt/homebrew/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+```
+
+For Intel Macs, use:
+```bash
+sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+```
+
+Add to PATH in `~/.zshrc`:
+```bash
+echo 'export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Verify Java installation:
+```bash
+java -version
+```
+
+**4. Install JMeter**
+
+Install JMeter via Homebrew:
+```bash
+brew install jmeter
+```
+
+Verify JMeter installation:
+```bash
+jmeter -v
+```
+
+Expected output:
+```
+    _    ____   _    ____ _   _ _____       _ __  __ _____ _____ _____ ____
+   / \  |  _ \ / \  / ___| | | | ____|     | |  \/  | ____|_   _| ____|  _ \
+  / _ \ | |_) / _ \| |   | |_| |  _|    _  | | |\/| |  _|   | | |  _| | |_) |
+ / ___ \|  __/ ___ \ |___|  _  | |___  | |_| | |  | | |___  | | | |___|  _ <
+/_/   \_\_| /_/   \_\____|_| |_|_____|  \___/|_|  |_|_____| |_| |_____|_| \_\ 5.6.3
+```
+
+**5. Install Git** (if not already installed)
+
+```bash
+brew install git
+git --version
+```
+
+**6. Clone Project Repository**
+
+```bash
+cd ~/Documents
+git clone <repository-url>
+cd JmeterTest
+```
+
+**7. Setup Credentials**
+
+Copy template:
+```bash
+cp config/credentials/credentials.properties.template config/credentials/credentials.properties
+```
+
+Edit credentials file:
+```bash
+nano config/credentials/credentials.properties
+```
+
+Or use any text editor:
+```bash
+open -e config/credentials/credentials.properties
+```
+
+Update with your test credentials:
+```properties
+test.username=your_username
+test.password=your_password
+```
+
+Save and close the editor.
+
+**8. Make Scripts Executable**
+
+```bash
+chmod +x scripts/*.sh
+```
+
+**9. Run Your First Test**
+
+```bash
+./scripts/run-test.sh load
+```
+
+**10. View Test Report**
+
+Generate report with your test:
+```bash
+./scripts/run-test.sh load --report
+```
+
+Open report:
+```bash
+open reports/loadtest-*/index.html
+```
+
+---
+
+**Troubleshooting on macOS:**
+
+If you get "command not found: jmeter":
+```bash
+brew link jmeter
+```
+
+If you get Java-related errors:
+```bash
+brew reinstall openjdk@11
+```
+
+To update JMeter:
+```bash
+brew upgrade jmeter
+```
+
+To uninstall:
+```bash
+brew uninstall jmeter
+brew uninstall openjdk@11
+```
+
+---
+
+#### Linux (Ubuntu/Debian)
+
+**1. Install Java**
+
+```bash
+sudo apt update
+sudo apt install openjdk-11-jdk -y
+java -version
+```
+
+**2. Install JMeter**
+
+```bash
+cd /tmp
+wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.3.tgz
+tar -xzf apache-jmeter-5.6.3.tgz
+sudo mv apache-jmeter-5.6.3 /opt/
+echo 'export PATH="/opt/apache-jmeter-5.6.3/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+**3. Verify Installation**
+```bash
+jmeter -v
+```
+
+**4. Clone Project**
+```bash
+git clone <repository-url>
+cd JmeterTest
+```
+
+**5. Setup Credentials**
+```bash
+cp config/credentials/credentials.properties.template config/credentials/credentials.properties
+nano config/credentials/credentials.properties
+```
+
+**6. Make Scripts Executable**
+```bash
+chmod +x scripts/*.sh
+```
+
+---
+
+#### Windows
+
+**1. Install Java**
+
+Download and install Java JDK from:
+- [Oracle JDK](https://www.oracle.com/java/technologies/downloads/)
+- Or [Adoptium OpenJDK](https://adoptium.net/)
+
+Verify installation in Command Prompt:
+```cmd
+java -version
+```
+
+**2. Set JAVA_HOME Environment Variable**
+
+- Right-click "This PC" → Properties → Advanced System Settings
+- Click "Environment Variables"
+- Under System Variables, click "New"
+- Variable name: `JAVA_HOME`
+- Variable value: `C:\Program Files\Java\jdk-11` (adjust to your path)
+- Click OK
+
+**3. Install JMeter**
+
+Download JMeter:
+- Visit https://jmeter.apache.org/download_jmeter.cgi
+- Download `apache-jmeter-5.6.3.zip`
+
+Extract and setup:
+- Extract ZIP to `C:\apache-jmeter-5.6.3`
+- Add to PATH:
+  - Environment Variables → System Variables → Path → Edit → New
+  - Add: `C:\apache-jmeter-5.6.3\bin`
+  - Click OK
+
+**4. Verify Installation**
+
+Open Command Prompt:
+```cmd
+jmeter -v
+```
+
+**5. Clone Project**
+
+Using Git Bash or Command Prompt:
+```cmd
+git clone <repository-url>
+cd JmeterTest
+```
+
+**6. Setup Credentials**
+
+```cmd
+copy config\credentials\credentials.properties.template config\credentials\credentials.properties
+notepad config\credentials\credentials.properties
+```
+
+Edit and save with your test credentials.
+
+**7. Run Tests**
+
+Using Git Bash (recommended):
+```bash
+./scripts/run-test.sh load
+```
+
+Or using Command Prompt with JMeter directly:
+```cmd
+jmeter -n -t test-plans\LoadTest.jmx -l results\results.jtl -q config\credentials\credentials.properties
+```
+
+---
+
 ## How to Use Scripts
 
 ### Run Tests Using Automation Script
