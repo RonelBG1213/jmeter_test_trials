@@ -12,6 +12,16 @@ jmeter.log
 config/credentials/*.properties
 !config/credentials/*.properties.template
 
+# Sensitive test data with passwords
+data/users.csv
+data/*_credentials.csv
+!data/*.csv.template
+
+# Environment-specific configs with secrets
+config/environments/*production*.properties
+config/environments/*staging*.properties
+!config/environments/*.properties.template
+
 *.tmp
 *.bak
 *~

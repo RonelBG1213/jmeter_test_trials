@@ -1,0 +1,16 @@
+email,password,firstName,lastName,customerId
+john.doe@example.com,${TEST_PASSWORD},John,Doe,CUST001
+jane.smith@example.com,${TEST_PASSWORD},Jane,Smith,CUST002
+robert.johnson@example.com,${TEST_PASSWORD},Robert,Johnson,CUST003
+mary.williams@example.com,${TEST_PASSWORD},Mary,Williams,CUST004
+michael.brown@example.com,${TEST_PASSWORD},Michael,Brown,CUST005
+sarah.jones@example.com,${TEST_PASSWORD},Sarah,Jones,CUST006
+david.garcia@example.com,${TEST_PASSWORD},David,Garcia,CUST007
+jennifer.martinez@example.com,${TEST_PASSWORD},Jennifer,Martinez,CUST008
+william.rodriguez@example.com,${TEST_PASSWORD},William,Rodriguez,CUST009
+lisa.wilson@example.com,${TEST_PASSWORD},Lisa,Wilson,CUST010
+
+# INSTRUCTIONS:
+# 1. Copy this file to data/users.csv
+# 2. Replace ${TEST_PASSWORD} with actual password
+# 3. NEVER commit data/users.csv to Git

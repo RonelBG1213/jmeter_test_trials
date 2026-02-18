@@ -1,6 +1,22 @@
-# JMeter Performance Testing Project
+# JMeter Performance Testing Framework
 
-Performance and load testing suite for the **Parabank** application using Apache JMeter.
+Enterprise-grade performance and load testing framework for web applications using Apache JMeter 5.6.3+.
+
+> 📖 **Quick Start**: See [FRAMEWORK_QUICK_REFERENCE.md](FRAMEWORK_QUICK_REFERENCE.md) for comprehensive guide  
+> 📋 **Enterprise Test Details**: See [QUICK_REFERENCE.txt](QUICK_REFERENCE.txt) for backend API test card
+
+---
+
+## 🎯 Framework Overview
+
+This framework supports multiple test types from basic load tests to enterprise-grade performance testing:
+
+- **Basic Tests**: Load, Stress, Spike, Soak, Stability (10-200 users)
+- **Enterprise Backend**: Large-scale API testing (500+ users, 30min)
+- **Enterprise UI**: Frontend/browser simulation (300+ users, 30min)
+- **Unified Execution**: Single script to run all test types
+- **Security-First**: Template-based configuration, gitignored secrets
+- **CI/CD Ready**: Easy integration with Jenkins, GitHub Actions, etc.
 
 ---
 
@@ -9,29 +25,55 @@ Performance and load testing suite for the **Parabank** application using Apache
 ```
 JmeterTest/
 ├── test-plans/          # JMeter test plan files (.jmx)
-│   ├── LoadTest.jmx     # Load test (10 threads, 5 loops)
-│   ├── StressTest.jmx   # Stress test (100 threads, 10 loops)
-│   ├── SpikeTest.jmx    # Spike test (200 threads, rapid ramp-up)
-│   ├── SoakTest.jmx     # Soak test (50 threads, 200 loops)
-│   └── StabilityTest.jmx # Stability test (25 threads, 100 loops)
-├── results/             # Test execution results (.jtl)
-├── reports/             # HTML performance test reports
+│   ├── LoadTest.jmx                # Basic load test (10 users)
+│   ├── StressTest.jmx              # Stress test (100 users)
+│   ├── SpikeTest.jmx               # Spike test (200 users, rapid)
+│   ├── SoakTest.jmx                # Soak test (50 users, long duration)
+│   ├── StabilityTest.jmx           # Stability test
+│   ├── EnterpriseLoadTest.jmx      # Enterprise backend API (500 users)
+│   └── EnterpriseUILoadTest.jmx    # Enterprise UI/frontend (300 users)
+│
+├── config/              # Configuration files
+│   ├── environments/    # Environment-specific properties
+│   │   ├── dev.properties
+│   │   ├── staging.properties
+│   │   ├── production.properties
+│   │   └── ui-production.properties
+│   └── credentials/     # Authentication credentials
+│       └── credentials.properties
+│
+├── data/                # Test data files
+│   ├── users.csv        # User credentials (gitignored)
+│   ├── users.csv.template
+│   └── products.csv
+│
+├── scripts/             # Unified test execution
+│   └── run-test.sh      # Single script for all test types
+│
+├── results/             # Test results (.jtl files)
+├── reports/             # HTML dashboard reports
 ├── logs/                # JMeter log files
-├── data/                # Test data files (CSV, JSON, etc.)
-├── scripts/             # Helper scripts for test automation
-└── README.md            # Project documentation
+│
+└── Documentation/       # Comprehensive guides
+    ├── FRAMEWORK_QUICK_REFERENCE.md    # Complete framework guide
+    ├── QUICK_REFERENCE.txt             # Enterprise backend test card
+    ├── ENTERPRISE_TEST_README.md       # Backend API test details
+    ├── UI_LOAD_TEST_README.md          # Frontend UI test details
+    ├── SECURITY_GUIDE.md               # Security best practices
+    └── UI_VS_BACKEND_COMPARISON.md     # Test type comparison
 ```
 
 ### Directory Descriptions
 
 | Directory | Purpose |
 |-----------|---------|
-| **test-plans/** | Contains all JMeter test plan files (.jmx). Each test plan is configured for specific testing scenarios. |
-| **results/** | Stores raw test results in .jtl format generated during test execution. |
-| **reports/** | Contains HTML dashboard reports generated from test results for analysis and sharing. |
-| **logs/** | Stores JMeter log files for debugging and tracking test execution details. |
-| **data/** | Houses external data files (CSV, JSON) used for parameterizing tests (e.g., user credentials, test data). |
-| **scripts/** | Contains utility scripts for test execution automation, CI/CD integration, or data preparation. |
+| **test-plans/** | Contains all JMeter test plan files (.jmx) - basic and enterprise-grade tests |
+| **config/** | Environment-specific properties and credentials (use templates for sensitive data) |
+| **data/** | External test data (CSV, JSON) - credentials and test datasets |
+| **scripts/** | Unified test execution script supporting all test types |
+| **results/** | Raw test results in .jtl format (timestamped, gitignored) |
+| **reports/** | HTML dashboard reports with performance metrics (gitignored) |
+| **logs/** | JMeter execution logs for debugging (gitignored) |
 
 ---
 
@@ -330,70 +372,107 @@ jmeter -n -t test-plans\LoadTest.jmx -l results\results.jtl -q config\credential
 
 ## How to Use Scripts
 
-### Run Tests Using Automation Script
+### Run Tests Using Unified Script
 
-Navigate to project root and use the run-test.sh script:
+Navigate to project root and use the run-test.sh script - it supports all test types:
 
-#### Available Test Options
+#### Basic Tests
 
 ```bash
 # Run load test (10 users, 5 loops)
-./scripts/run-test.sh load
+./scripts/run-test.sh load --report
 
 # Run stress test (100 users, 10 loops)
-./scripts/run-test.sh stress
+./scripts/run-test.sh stress --report
 
 # Run spike test (200 users, rapid 10s ramp-up, 3 loops)
-./scripts/run-test.sh spike
+./scripts/run-test.sh spike --report
 
 # Run soak test (50 users, 200 loops, sustained load)
-./scripts/run-test.sh soak
+./scripts/run-test.sh soak --report
 
-# Run stability test (25 users, 100 loops)
-./scripts/run-test.sh stability
+# Run stability test
+./scripts/run-test.sh stability --report
 
-# Run all tests
-./scripts/run-test.sh all
+# Run all basic tests
+./scripts/run-test.sh all --report
+```
+
+#### Enterprise Tests
+
+```bash
+# Enterprise backend API test (500 users, 30 min)
+./scripts/run-test.sh enterprise production --report
+
+# Enterprise backend with custom load
+./scripts/run-test.sh enterprise staging --users 200 --report
+
+# Enterprise UI/Frontend test (300 users, 30 min)
+./scripts/run-test.sh ui --report
+
+# Enterprise UI with custom duration
+./scripts/run-test.sh enterprise-ui --users 100 --duration 600 --report
+```
+
+#### Advanced Options
+
+```bash
+# Use specific environment
+./scripts/run-test.sh load dev --report
+./scripts/run-test.sh stress staging --report
+
+# Override user count
+./scripts/run-test.sh enterprise --users 200 --report
+
+# Override duration (seconds)
+./scripts/run-test.sh soak --duration 7200 --report
+
+# Custom properties file
+./scripts/run-test.sh load --props /path/to/custom.properties --report
+
+# Distributed testing (for 1000+ users)
+./scripts/run-test.sh enterprise production \
+  --distributed \
+  --hosts jmeter-slave1:1099,jmeter-slave2:1099,jmeter-slave3:1099 \
+  --report
 ```
 
 #### Test Types Explained
 
-| Test Type | Purpose | Configuration | Use Case |
-|-----------|---------|---------------|----------|
-| **Load** | Validate normal load | 10 threads, 5 loops, 10s ramp-up | Regular user traffic simulation |
-| **Stress** | Find system limits | 100 threads, 10 loops, 60s ramp-up | Identify breaking point |
-| **Spike** | Test sudden traffic surge | 200 threads, 3 loops, 10s ramp-up | Simulate flash sales, viral events |
-| **Soak** | Detect memory leaks | 50 threads, 200 loops, 60s ramp-up | Long-duration stability check |
-| **Stability** | Sustained performance | 25 threads, 100 loops, 30s ramp-up | Extended reliability testing |
-
-#### Generate HTML Reports
-
-Add `--report` flag to generate HTML dashboard:
-
-```bash
-# Run load test with report
-./scripts/run-test.sh load --report
-
-# Run stress test with report
-./scripts/run-test.sh stress --report
-
-# Run spike test with report
-./scripts/run-test.sh spike --report
-
-# Run soak test with report (long duration)
-./scripts/run-test.sh soak --report
-
-# Run stability test with report
-./scripts/run-test.sh stability --report
-
-# Run all tests with reports
-./scripts/run-test.sh all --report
-```
+| Test Type | Users | Duration | Purpose | JVM Memory |
+|-----------|-------|----------|---------|------------|
+| **load** | 10 | 5 loops | Baseline performance | 2GB |
+| **stress** | 100 | 10 loops | Find breaking point | 3GB |
+| **spike** | 200 | 3 loops | Sudden traffic surge | 3GB |
+| **soak** | 50 | 200 loops | Memory leak detection | 3GB |
+| **stability** | varies | varies | General stability | 2GB |
+| **enterprise** | 500 | 30 min | Backend API load test | 4GB |
+| **ui** | 300 | 30 min | Frontend browser simulation | 6GB |
 
 #### Script Help
 
 ```bash
+# Show comprehensive help with all options
 ./scripts/run-test.sh --help
+```
+
+#### Generate HTML Reports
+
+Reports are automatically generated when you use the `--report` flag. They will:
+- Auto-open in your default browser
+- Be saved to `reports/` directory with timestamp
+- Include comprehensive performance metrics and graphs
+
+```bash
+# Basic test with report
+./scripts/run-test.sh load --report
+
+# Enterprise test with report
+./scripts/run-test.sh enterprise production --report
+
+# Reports location
+open reports/loadtest-*/index.html
+open reports/enterpriseloadtest-*/index.html
 ```
 
 ---

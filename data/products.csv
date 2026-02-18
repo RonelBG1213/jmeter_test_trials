@@ -1,0 +1,21 @@
+product_id,product_name,category,price,stock
+1001,Premium Laptop,Electronics,1299.99,150
+1002,Wireless Mouse,Electronics,29.99,500
+1003,Mechanical Keyboard,Electronics,149.99,300
+1004,27-inch Monitor,Electronics,399.99,200
+1005,USB-C Hub,Electronics,49.99,450
+2001,Office Chair,Furniture,249.99,100
+2002,Standing Desk,Furniture,599.99,75
+2003,Desk Lamp,Furniture,39.99,300
+3001,Coffee Maker,Kitchen,89.99,200
+3002,Blender,Kitchen,129.99,150
+3003,Toaster,Kitchen,39.99,250
+4001,Running Shoes,Sports,119.99,400
+4002,Yoga Mat,Sports,29.99,600
+4003,Dumbbell Set,Sports,199.99,100
+5001,Backpack,Accessories,59.99,350
+5002,Water Bottle,Accessories,19.99,800
+5003,Phone Case,Accessories,24.99,1000
+6001,Novel Book,Books,14.99,500
+6002,Programming Guide,Books,49.99,200
+6003,Cookbook,Books,29.99,300

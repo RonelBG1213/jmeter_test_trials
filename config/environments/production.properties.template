@@ -1,0 +1,42 @@
+# Enterprise E-Commerce Load Test Configuration - TEMPLATE
+# Production Environment Settings
+# 
+# INSTRUCTIONS:
+# 1. Copy this file to production.properties
+# 2. Replace ${VARIABLE} placeholders with actual values
+# 3. NEVER commit production.properties to Git
+# 4. Store secrets in CI/CD secret management (GitHub Secrets, Jenkins Credentials, etc.)
+
+# Application Configuration
+base.url=${PROD_BASE_URL}
+protocol=https
+api.version=v2
+
+# Load Configuration
+browse.users=200
+shopping.users=200
+checkout.users=100
+ramp.time=120
+test.duration=1800
+
+# Think Time Configuration (milliseconds)
+think.time=3000
+think.time.deviation=2000
+
+# User Credentials (Use CI/CD secrets!)
+test.password=${TEST_PASSWORD}
+
+# Performance Thresholds
+response.time.threshold=2000
+error.rate.threshold=1.0
+
+# Monitoring Configuration
+influxdb.url=${INFLUXDB_URL}
+influxdb.enabled=false
+grafana.dashboard.url=${GRAFANA_URL}
+
+# Test Metadata
+test.environment=production
+test.version=1.0.0
+test.run.by=${user.name}
+test.purpose=Baseline Performance Test
